@@ -28,6 +28,13 @@ a{
   outline: none;
 } */
 
+/* Hi Professor,
+
+This code made the focus outline disappear when tabbing to links in <main>.
+The task was to delete it, but I was worried that if I deleted it, you might not be able to find it. 
+So I commented it out instead. It works the same way. Thanks! */
+
+
 h2 {
   margin-top: 0;
 }
@@ -209,6 +216,9 @@ article p {
         <a href="#">Politics</a>
         <!-- <a href="#" tabindex="-1">Business</a> -->
         <a href="#">Business</a>
+        <!-- tabindex="-1" made this link get skipped when pressing Tab. 
+         I removed it so keyboard users can reach the link.
+        I kept the old line commented out so you can see what I changed. -->
 
         <a href="#">Entertainment</a>
         <a href="#">Sports</a>
@@ -223,6 +233,9 @@ article p {
       <input type="text">
       <!-- <button type="button" onfocus="getFocus()">Sign up</button></div> -->
        <button type="button" onclick="getFocus()">Sign up</button></div>
+      <!-- Tabbing to this button made it act like it was clicked. 
+       I changed onfocus to onclick, so now it only works when I click it or press Enter. 
+       I kept the old line so you can see what I changed. -->
       
     </div>
   </div>
@@ -245,11 +258,16 @@ article p {
         <div class="tier-header">
           <!-- <h2 tabindex="0">In the news</h2> -->
            <h2 >In the news</h2>
+           <!-- This heading had tabindex="0", so Tab stopped on it, but it’s just a title, not a link or button. 
+            I removed it. I kept the old line so you can see what I changed. -->
         </div>
         <article>
           <h3 class="headline">Bee wonders if maybe everyone else is a drone and he's the only one who has it "figured out."</h3>
           <!-- <p><a href="#" tabindex="1"><b>Read More</b></a></p> -->
            <p><a href="#"><b>Read More</b></a></p>
+           <!-- This link had tabindex="1", so Tab jumped to it first and messed up the order. 
+            I removed it so Tab goes in the normal order.
+            I kept the old line so you can see what I changed. -->
           <img src="https://github.com/udacity/ud891/blob/gh-pages/lesson2-focus/02-dom-order/images/bee.jpg?raw=true" alt="A bee on top of a flower" />
         </article>
       </div>

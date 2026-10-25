@@ -34,43 +34,64 @@
   </head>
   <body>
     <h1>Feedback form</h1>
-
     <form novalidate>
+      <!-- Added novalidate so JavaScript errors can show. -->
       <div class="control">
+        <!-- <label for="name">Full name <span class="required">*</span></label -->
+        <!-- Added required so the screen reader says it's required. -->
         <label for="name"
-          >Full name(required) <span class="required">*</span></label
+          >Full name <span class="required">required</span></label
         ><input id="name" name="name" type="text" required />
+        <!-- Changed * to "required" so it's shown in text, not just a red star. -->
+        <!-- Added for="name" so the label connects to the input. -->
       </div>
       <div class="control">
-        <label for="biography">Biography(required)</label
+        <!-- Added "required" text and required to the textarea so the screen reader says it's required. -->
+        <label for="biography"
+          >Biography <span class="required">required</span></label
         ><textarea
           id="biography"
           name="biography"
           type="text"
           required
+          aria-describedby="bio_help"
         ></textarea>
-        <span>Include examples on your skills in JavaScript.</span>
+        <!-- Added aria-describedby so the screen reader reads the hint too. -->
+        <span id="bio_help"
+          >Include examples on your skills in JavaScript.</span
+        >
+        <!-- Added for="biography" so the label connects to the textarea. -->
       </div>
 
-      <div>Gender(required)</div>
-      <div class="control">
-        <input
-          id="gender_male"
-          name="gender"
-          type="radio"
-          value="male"
-          required
-        /><label for="gender_male">Male</label>
-      </div>
-      <div class="control">
-        <input
-          id="gender_female"
-          name="gender"
-          type="radio"
-          value="female"
-          required
-        /><label for="gender_female">Female</label>
-      </div>
+      <fieldset>
+        <!-- Put Male and Female in a fieldset with a legend, so the screen reader knows they are both for Gender. -->
+        <!-- <div>Gender</div> -->
+        <!-- Changed <div>Gender</div> to <legend>Gender</legend>, so the screen reader reads "Gender" with each option. -->
+        <legend>Gender <span class="required">required</span></legend>
+        <!-- Added "required" text to the legend so people know Gender is required. -->
+        <div class="control">
+          <input
+            id="gender_male"
+            name="gender"
+            type="radio"
+            value="male"
+            required
+          /><label for="gender_male">Male</label>
+          <!-- Added for="gender_male" so the label connects to the radio button. -->
+          <!-- Added required so the screen reader says it's required. -->
+        </div>
+        <div class="control">
+          <input
+            id="gender_female"
+            name="gender"
+            type="radio"
+            value="female"
+            required
+          /><label for="gender_female">Female</label>
+          <!-- Added for="gender_female" so the label connects to the radio button. -->
+          <!-- Added required so the screen reader says it's required. -->
+        </div>
+      </fieldset>
 
       <div class="control">
         <input
@@ -80,8 +101,11 @@
           value="1"
           required
         /><label for="accept_agbs"
-          >I accept the terms and conditions(required)</label
+          >I accept the terms and conditions
+          <span class="required">required</span></label
         >
+        <!-- Added for="accept_agbs" so the label connects to the checkbox. -->
+        <!-- Added "required" text and required so the screen reader says it's required. -->
       </div>
       <div class="control">
         <input name="validate" type="hidden" value="1" /><input
@@ -127,8 +151,12 @@
 
           if ((value = $.urlParam(input)) === null) {
             if ($("fieldset.errors").length === 0) {
+              // $("form").prepend(
+              //   '<fieldset class="errors"><legend>Errors</legend><ul></ul></fieldset>',
+              // );
+              // Added tabindex="-1" so focus can move to the error box.
               $("form").prepend(
-                '<fieldset class="errors"><legend>Errors</legend><ul></ul></fieldset>',
+                '<fieldset class="errors" tabindex="-1"><legend>Errors</legend><ul></ul></fieldset>',
               );
             }
 
@@ -146,15 +174,16 @@
             }
             // R.G. hint: fix next line ;)
             // $error = $("<a>" + message + "</a>");
+            // The link had no href, so I couldn't tab to it. Added href so it works and goes to the field.
+
             $error = $(
-              '<a class="error" id="' +
-                input +
-                '_description" href="#' +
+              '<a href="#' +
                 $referencedElement.attr("id") +
                 '">' +
                 message +
                 "</a>",
             );
+
             $error.click(function (e) {
               // If we rely on the link's href pointing to the input's ID, it doesn't trigger forms mode in screen readers
               $referencedElement.focus();
@@ -164,8 +193,9 @@
             $errorContainer.append("<li>").find("li:last").append($error);
 
             if ($(":not(form):focus").length === 0) {
+              // This was empty. Now focus goes to the error box.
+              $("fieldset.errors").focus();
               // See https://stackoverflow.com/questions/46134247/jquery-setting-focus-doesnt-work-in-ie11/
-              $error.focus();
             }
           } else {
             if ($input.is(":checkbox")) {
@@ -195,7 +225,11 @@
               "You must accept our terms and conditions!",
             );
 
-            if ($(".error").length === 0) {
+            // if ($(".error").length === 0) {
+            //   return alert("All inputs are valid.");
+            // }
+            // Nothing had class "error", so the alert always showed. Now it checks the error list.
+            if ($("fieldset.errors li").length === 0) {
               return alert("All inputs are valid.");
             }
           }
